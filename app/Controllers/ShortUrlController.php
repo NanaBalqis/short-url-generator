@@ -80,4 +80,38 @@ class ShortUrlController extends BaseController
 
         return $code;
     }
+
+    public function apiShorten()
+    {
+        $data = $this->request->getJSON(true);
+
+        $originalUrl = $data['original_url'] ?? '';
+
+        if (empty($originalUrl)) {
+            return $this->response->setJSON([
+                'success' => false,
+                'message' => 'Please enter a URL.'
+            ]);
+        }
+
+        if (!filter_var($originalUrl, FILTER_VALIDATE_URL)) {
+            return $this->response->setJSON([
+                'success' => false,
+                'message' => 'Invalid URL.'
+            ]);
+        }
+
+        $shortCode = $this->generateShortCode();
+
+        $this->urlModel->insert([
+            'original_url' => $originalUrl,
+            'short_code'   => $shortCode,
+            'clicks'       => 0
+        ]);
+
+        return $this->response->setJSON([
+            'success' => true,
+            'short_url' => base_url($shortCode)
+        ]);
+    }
 }
