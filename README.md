@@ -18,13 +18,14 @@ This project allows users to convert long URLs into shorter, more manageable lin
 
 ## Technology Stack
 
+### Frontend
+- React.js
+- Vite
+- CSS3
+
 ### Backend
 - PHP
 - CodeIgniter 4
-
-### Frontend
-- HTML5
-- Bootstrap 5
 
 ### Database
 - MySQL
@@ -134,31 +135,56 @@ the application automatically redirects to:
 https://www.google.com/search?q=force-tech
 ```
 
-## Project Structure
+## Architecture
 
-```text
-app/
-├── Controllers
-│   └── ShortUrlController.php
-│
-├── Models
-│   └── ShortUrlModel.php
-│
-├── Views
-│   └── home.php
-│
-app/Config
-│   └── Routes.php
+React Frontend
+       ↓
+CodeIgniter 4 API
+       ↓
+MySQL Database
+
+Users interact with the React interface. API requests are sent to the CodeIgniter 4 backend, which handles URL generation, database operations, and URL redirection.
+
+## Features
+
+- Generate short URLs from long URLs
+- React.js frontend interface
+- CodeIgniter 4 REST API backend
+- Store URL mappings in MySQL
+- Redirect short URLs to original URLs
+- Input validation
+- Unique short code generation
+- Click counter tracking
+- Responsive user interface
+
+## Installation
+
+### Backend
+
+```bash
+composer install
+php spark serve
 ```
 
-## Future Improvements
+Backend runs at:
 
-- Custom short URLs
-- QR Code generation
-- URL expiration
-- User authentication
-- Analytics dashboard
-- REST API support
+```text
+http://localhost:8080
+```
+
+### Frontend
+
+```bash
+cd frontend
+npm install
+npm run dev
+```
+
+Frontend runs at:
+
+```text
+http://localhost:5173
+```
 
 ## Author
 
