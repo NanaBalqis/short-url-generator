@@ -1,69 +1,167 @@
-# CodeIgniter 4 Application Starter
+# Short URL Generator
 
-## What is CodeIgniter?
+A simple URL shortening web application built using CodeIgniter 4 and MySQL.
 
-CodeIgniter is a PHP full-stack web framework that is light, fast, flexible and secure.
-More information can be found at the [official site](https://codeigniter.com).
+## Project Overview
 
-This repository holds a composer-installable app starter.
-It has been built from the
-[development repository](https://github.com/codeigniter4/CodeIgniter4).
+This project allows users to convert long URLs into shorter, more manageable links. The generated short URLs can be shared and used to redirect users to the original URL. The application also tracks the number of clicks for each shortened URL.
 
-More information about the plans for version 4 can be found in [CodeIgniter 4](https://forum.codeigniter.com/forumdisplay.php?fid=28) on the forums.
+## Features
 
-You can read the [user guide](https://codeigniter.com/user_guide/)
-corresponding to the latest version of the framework.
+- Generate short URLs from long URLs
+- Redirect short URLs to the original destination
+- Store URL mappings in MySQL database
+- Input validation for URLs
+- Unique short code generation
+- Click counter for tracking URL usage
+- Simple and responsive user interface using Bootstrap 5
 
-## Installation & updates
+## Technology Stack
 
-`composer create-project codeigniter4/appstarter` then `composer update` whenever
-there is a new release of the framework.
+### Backend
+- PHP
+- CodeIgniter 4
 
-When updating, check the release notes to see if there are any changes you might need to apply
-to your `app` folder. The affected files can be copied or merged from
-`vendor/codeigniter4/framework/app`.
+### Frontend
+- HTML5
+- Bootstrap 5
 
-## Setup
+### Database
+- MySQL
 
-Copy `env` to `.env` and tailor for your app, specifically the baseURL
-and any database settings.
+## Database Setup
 
-## Important Change with index.php
+Create a database named:
 
-`index.php` is no longer in the root of the project! It has been moved inside the *public* folder,
-for better security and separation of components.
+```sql
+CREATE DATABASE short_url_generator;
+```
 
-This means that you should configure your web server to "point" to your project's *public* folder, and
-not to the project root. A better practice would be to configure a virtual host to point there. A poor practice would be to point your web server to the project root and expect to enter *public/...*, as the rest of your logic and the
-framework are exposed.
+Select the database and run:
 
-**Please** read the user guide for a better explanation of how CI4 works!
+```sql
+CREATE TABLE short_urls (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    original_url TEXT NOT NULL,
+    short_code VARCHAR(10) NOT NULL UNIQUE,
+    clicks INT DEFAULT 0,
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+);
+```
 
-## Repository Management
+## Installation Guide
 
-We use GitHub issues, in our main repository, to track **BUGS** and to track approved **DEVELOPMENT** work packages.
-We use our [forum](http://forum.codeigniter.com) to provide SUPPORT and to discuss
-FEATURE REQUESTS.
+### 1. Clone Repository
 
-This repository is a "distribution" one, built by our release preparation script.
-Problems with it can be raised on our forum, or as issues in the main repository.
+```bash
+git clone https://github.com/NanaBalqis/short-url-generator.git
+```
 
-## Server Requirements
+### 2. Move Into Project Directory
 
-PHP version 8.2 or higher is required, with the following extensions installed:
+```bash
+cd short-url-generator
+```
 
-- [intl](http://php.net/manual/en/intl.requirements.php)
-- [mbstring](http://php.net/manual/en/mbstring.installation.php)
+### 3. Install Dependencies
 
-> [!WARNING]
-> - The end of life date for PHP 7.4 was November 28, 2022.
-> - The end of life date for PHP 8.0 was November 26, 2023.
-> - The end of life date for PHP 8.1 was December 31, 2025.
-> - If you are still using below PHP 8.2, you should upgrade immediately.
-> - The end of life date for PHP 8.2 will be December 31, 2026.
+```bash
+composer install
+```
 
-Additionally, make sure that the following extensions are enabled in your PHP:
+### 4. Configure Environment
 
-- json (enabled by default - don't turn it off)
-- [mysqlnd](http://php.net/manual/en/mysqlnd.install.php) if you plan to use MySQL
-- [libcurl](http://php.net/manual/en/curl.requirements.php) if you plan to use the HTTP\CURLRequest library
+Copy:
+
+```text
+env
+```
+
+to:
+
+```text
+.env
+```
+
+Configure database settings in `.env`:
+
+```env
+database.default.hostname = localhost
+database.default.database = short_url_generator
+database.default.username = root
+database.default.password =
+database.default.DBDriver = MySQLi
+database.default.port = 3306
+```
+
+### 5. Start Development Server
+
+```bash
+php spark serve
+```
+
+### 6. Open Application
+
+```text
+http://localhost:8080
+```
+
+## Example Usage
+
+### Input
+
+```text
+https://www.google.com/search?q=force-tech
+```
+
+### Generated Short URL
+
+```text
+http://localhost:8080/abc123
+```
+
+### Result
+
+When a user accesses:
+
+```text
+http://localhost:8080/abc123
+```
+
+the application automatically redirects to:
+
+```text
+https://www.google.com/search?q=force-tech
+```
+
+## Project Structure
+
+```text
+app/
+├── Controllers
+│   └── ShortUrlController.php
+│
+├── Models
+│   └── ShortUrlModel.php
+│
+├── Views
+│   └── home.php
+│
+app/Config
+│   └── Routes.php
+```
+
+## Future Improvements
+
+- Custom short URLs
+- QR Code generation
+- URL expiration
+- User authentication
+- Analytics dashboard
+- REST API support
+
+## Author
+
+Nana Balqis
+
+Software Developer Internship Screening Task
